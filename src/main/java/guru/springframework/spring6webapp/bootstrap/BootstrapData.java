@@ -61,10 +61,14 @@ public class BootstrapData implements CommandLineRunner {
         Author brandoSaved = authorRepository.save(brando);
         Book bandoSaved = bookRepository.save(bandoBio);
 
-        // Crete Association between books
+        // Crete Association between books. Adds Author to book
         ericSaved.getBooks().add(dddSaved);
         brandoSaved.getBooks().add(bandoSaved);
+        bandoSaved.getAuthors().add(brandoSaved);
+        dddSaved.getAuthors().add(ericSaved);
 
+
+        // Creating a Publisher
         Publisher pub1 = new Publisher();
         pub1.setPublisherName("BrandoBando");
         pub1.setAddress("12 RandomAddress");
@@ -73,16 +77,18 @@ public class BootstrapData implements CommandLineRunner {
         pub1.setZip("19777");
         Publisher savedPublisher = publisherRepository.save(pub1);
 
+        // Setting a publisher for both books
         dddSaved.setPublisher(savedPublisher);
         bandoSaved.setPublisher(savedPublisher);
 
+        // Saving to Repositories
         authorRepository.save(ericSaved);
         authorRepository.save(brandoSaved);
         bookRepository.save(dddSaved);
         bookRepository.save(bandoSaved);
 
 
-
+        // Printing out the count inside our repositories
         System.out.println("In Bootstrap");
         System.out.println("Author Count:" + authorRepository.count());
         System.out.println("Book Count:" + bookRepository.count());
